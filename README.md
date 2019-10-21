@@ -3,7 +3,7 @@
   In this report we research dependencies of execution time on functions in CUDA library. 
   We measured execution time according to:
   * size of data vector
-  * threds per block
+  * threads per block
   
   Collected data are presended in **Results** section.
   
