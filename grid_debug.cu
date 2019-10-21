@@ -23,7 +23,7 @@ vectorAdd(int *A, int numElements)
 
 int main(int argc, char **argv) {
 
-  int nElem = 10000;
+  int nElem = 10000000000;
   int *h_vect = (int *)malloc(nElem * sizeof(int));
   int *d_vect = NULL;
 
@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
 
   cudaMemcpy(d_vect, h_vect, nElem * sizeof(int), cudaMemcpyHostToDevice);
 
-  vectorAdd<<<block, grid>>>(d_vect,nElem);
+  vectorAdd<<<grid, block>>>(d_vect, nElem);
   cudaDeviceSynchronize();
 
   cudaMemcpy(h_vect, d_vect, nElem * sizeof(int), cudaMemcpyDeviceToHost);
