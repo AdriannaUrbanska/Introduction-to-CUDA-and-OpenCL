@@ -11,7 +11,7 @@
 
 To measure execution time we used nvprof tool and we send data to *.txt files.
 ```
-nvprof ./gird_debug 2>&1 | tee CM_VS100.txt
+nvprof ./gird_debug 2>&1 | tee CM_VS_SizeOfVector.txt
 ```
 sample results:
 ```
@@ -39,6 +39,7 @@ block.x 3 block.y 1 block.z 1
                     0.00%  1.2570us         1  1.2570us  1.2570us  1.2570us  cuDeviceGetUuid
 
 ```
+then, we separated time data to [doc file](https://docs.google.com/spreadsheets/d/10RdRgu6PN2vl1llNBVsojPbfDENzBCP7uocNg2IaAhI/edit#gid=0) and made charts.
 
 
 ## Results
