@@ -74,7 +74,7 @@
 
 
 ## Results
-![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Dependence%20of%20the%20execution%20time%20on%20the%20functions.png)
+![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20the%20functions.png)
 ## Authors
 
 Adrianna Urbańska
