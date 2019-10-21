@@ -5,7 +5,7 @@
   * size of data vector
   * threds per block
   
-  Collected data are presended in *Results* section.
+  Collected data are presended in **Results** section.
   
 ## Execution
 
