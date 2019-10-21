@@ -10,20 +10,44 @@ __global__ void checkIndex(void) {
   gridDim.x,gridDim.y,gridDim.z);
 }
 
+__global__ void
+vectorAdd(int *A, int numElements)
+{
+    int i = blockDim.x * blockIdx.x + threadIdx.x;
+
+    if (i < numElements)
+    {
+        A[i] = A[i] * 2;
+    }
+}
+
 int main(int argc, char **argv) {
 
-  // define total data element
-  int nElem = 6;
-  // define grid and block structure
+  int nElem = 100;
+  int *h_vect = (int *)malloc(nElem * sizeof(int));
+  int *d_vect = NULL;
+
+  for (int i = 0; i < nElem; ++i)
+     {
+         h_vect[i] = rand();
+     }
+
+  cudaMalloc((void **)&d_vect, nElem * sizeof(int));
+  cudaMemcpy(d_vect, h_vect, nElem * sizeof(int), cudaMemcpyHostToDevice);
+  cudaMemcpy(h_vect, d_vect, nElem * sizeof(int), cudaMemcpyDeviceToHost);
+
   dim3 block (3);
   dim3 grid ((nElem+block.x-1)/block.x);
   // check grid and block dimension from host side
   printf("grid.x %d grid.y %d grid.z %d\n",grid.x, grid.y, grid.z);
   printf("block.x %d block.y %d block.z %d\n",block.x, block.y, block.z);
   // check grid and block dimension from device side
-  checkIndex <<<grid, block>>> ();
+  //checkIndex <<<grid, block>>> ();
   // reset device before you leave
+  vectorAdd<<<block, grid>>>(d_vect,nElem);
   cudaDeviceReset();
+  free(h_vect);
+  cudaFree(d_vect);
   return(0);
 
 }
