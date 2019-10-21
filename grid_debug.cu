@@ -23,7 +23,7 @@ vectorAdd(int *A, int numElements)
 
 int main(int argc, char **argv) {
 
-  int nElem = 100;
+  int nElem = 102173;
   int *h_vect = (int *)malloc(nElem * sizeof(int));
   int *d_vect = NULL;
 
@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
 
   cudaMalloc((void **)&d_vect, nElem * sizeof(int));
 
-  dim3 block (3);
+  dim3 block(15);
   dim3 grid ((nElem+block.x-1)/block.x);
   // check grid and block dimension from host side
   printf("grid.x %d grid.y %d grid.z %d\n",grid.x, grid.y, grid.z);
