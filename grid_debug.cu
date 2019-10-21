@@ -23,7 +23,7 @@ vectorAdd(int *A, int numElements)
 
 int main(int argc, char **argv) {
 
-  int nElem = 10000000000;
+  int nElem = 100;
   int *h_vect = (int *)malloc(nElem * sizeof(int));
   int *d_vect = NULL;
 
