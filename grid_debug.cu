@@ -23,7 +23,7 @@ vectorAdd(int *A, int numElements)
 
 int main(int argc, char **argv) {
 
-  int nElem = 100;
+  int nElem = 10000;
   int *h_vect = (int *)malloc(nElem * sizeof(int));
   int *d_vect = NULL;
 
@@ -33,18 +33,24 @@ int main(int argc, char **argv) {
      }
 
   cudaMalloc((void **)&d_vect, nElem * sizeof(int));
-  cudaMemcpy(d_vect, h_vect, nElem * sizeof(int), cudaMemcpyHostToDevice);
-  cudaMemcpy(h_vect, d_vect, nElem * sizeof(int), cudaMemcpyDeviceToHost);
 
   dim3 block (3);
   dim3 grid ((nElem+block.x-1)/block.x);
   // check grid and block dimension from host side
   printf("grid.x %d grid.y %d grid.z %d\n",grid.x, grid.y, grid.z);
   printf("block.x %d block.y %d block.z %d\n",block.x, block.y, block.z);
+
+  cudaMemcpy(d_vect, h_vect, nElem * sizeof(int), cudaMemcpyHostToDevice);
+
+  vectorAdd<<<block, grid>>>(d_vect,nElem);
+  cudaDeviceSynchronize();
+
+  cudaMemcpy(h_vect, d_vect, nElem * sizeof(int), cudaMemcpyDeviceToHost);
+
+
   // check grid and block dimension from device side
   //checkIndex <<<grid, block>>> ();
   // reset device before you leave
-  vectorAdd<<<block, grid>>>(d_vect,nElem);
   cudaDeviceReset();
   free(h_vect);
   cudaFree(d_vect);
