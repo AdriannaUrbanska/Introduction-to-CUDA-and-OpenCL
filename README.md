@@ -1,6 +1,6 @@
 # CUDA functions execution dependencies
 
-  In this report we research dependencies of execution time of functions in CUDA library. 
+  In this report we research dependencies of execution time on functions in CUDA library. 
   We measured execution time according to:
   * size of data vector
   * threds per block
@@ -40,7 +40,7 @@
   ```
   nvcc grid_debug.cu -o grid_debug
   ```
-  To measure execution time we used nvprof tool and we send data to *.txt files.
+  To measure execution time we used nvprof tool and we sent data to *.txt files.
   ```
   nvprof ./gird_debug 2>&1 | tee CM_VS_[SizeOfVector].txt
   ```
