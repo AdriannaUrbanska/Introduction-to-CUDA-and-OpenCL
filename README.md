@@ -75,17 +75,19 @@
 
 
 ## Results
+
+### Dependence of the execution time on size of the vector
 ![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20size%20of%20the%20vector.png)
 
 
-
+### Dependence of the execution time on blocks number
 During the second experiment we were changing blocks number. The size of the vector was left to be constant and equal to 102173. We were setting values of block.x, block.y, block.z to be always equal.
 ![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20blocks%20number.png)
 
 We can observe on the plot that the shortest execution time for the vectorAdd function is when we set blocks number equals to 5.
 There are no significant changes at execution time for CUDA memcpy HtoD and CUDA memcpy DtoH functions.
 
-
+### Dependence of the execution time on ThreadsPerBlock
 ![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20ThreadsPerBlock.png)
 
 
