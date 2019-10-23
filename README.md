@@ -6,7 +6,7 @@
   * blocks number
   * threads per block number
   
-  Collected data are presended in **Results** section.
+  Collected data are presented in **Results** section.
   
 ## Code
   At the beggining, we declare size of vector, block and grid. These variables are point of this project.
@@ -80,7 +80,7 @@
 As a first part of this project we repeated the [grig_debug](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/src/grid_debug.cu) program, repleacing vector size values from 100 to 100,000,000.
 ![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20size%20of%20the%20vector.png)
 
-We can see a significant increase of all functions starting before the 10,000,000 point. 
+We can see a significant increase of all functions starting before the 10,000,000 point. The growth 
 
 
 ### 2. Dependence of the execution time on blocks number
@@ -111,7 +111,7 @@ We can see that there are no significant changes at execution time for CUDA memc
 
 ![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20excution%20time%20on%20ThreadsPerBlock%20for%20vectorAdd%20function.png)
 
-However, when it comes to vectorAdd function we can notice that after threadsPerBlock's value equal to 131072 execution time started increase rapidly. 
+However, when it comes to vectorAdd function we can notice that after threadsPerBlock's value is equal to 131072 execution time started increase rapidly. 
 
 ## Authors
 
