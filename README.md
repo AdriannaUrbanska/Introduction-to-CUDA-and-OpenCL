@@ -114,7 +114,7 @@ We can see that there are no significant changes at execution time for CUDA memc
 However, when it comes to vectorAdd function we can notice that after threadsPerBlock's value is equal to 131072 execution time started increase rapidly. 
 
 
-
+#
 All we can say is that choosing the right parameters is very complex problem and every data structure requires separated analysis and making some tests to check which configuration give as the most optimal solution.
 
 ## Authors
