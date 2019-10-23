@@ -11,8 +11,8 @@
 ## Code
   At the beggining, we declare size of vector, block and grid. These variables are point of this project.
   ```
-  int nElem = 100;
-  dim3 block (3);
+  int nElem = 102173;
+  dim3 block (15);
   dim3 grid ((nElem+block.x-1)/block.x);
   ```
   Secondly, we made pointers to vector in host and device and alloc memory.
@@ -88,6 +88,19 @@ We can observe on the plot that the shortest execution time for the vectorAdd fu
 There are no significant changes at execution time for CUDA memcpy HtoD and CUDA memcpy DtoH functions.
 
 ### 3. Dependence of the execution time on ThreadsPerBlock
+In this point we changed our code and instead:
+  ```
+  dim3 block (15);
+  dim3 grid ((nElem+block.x-1)/block.x);
+  ```
+we used:
+```
+  int threadsPerBlock = 8388608;
+  int blocksPerGrid = (nElem+threadsPerBlock-1)/threadsPerBlock;
+```
+That modification is included in [grid_debug2.cu](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/src/grid_debug2.cu) file.
+We were changing number of threadsPerBlock from 128 to 8388608. The size of the vector was left to be constant and equal to 102173.
+
 ![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20ThreadsPerBlock.png)
 
 
