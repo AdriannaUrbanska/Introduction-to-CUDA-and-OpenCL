@@ -1,0 +1,19 @@
+==27692== NVPROF is profiling process 27692, command: ./grid_debug
+==27692== Profiling application: ./grid_debug
+==27692== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   53.31%  36.096us         1  36.096us  36.096us  36.096us  [CUDA memcpy HtoD]
+                   46.69%  31.616us         1  31.616us  31.616us  31.616us  [CUDA memcpy DtoH]
+      API calls:   50.14%  293.44ms         1  293.44ms  293.44ms  293.44ms  cudaMalloc
+                   34.90%  204.24ms         1  204.24ms  204.24ms  204.24ms  cudaFree
+                   14.34%  83.910ms         1  83.910ms  83.910ms  83.910ms  cudaDeviceReset
+                    0.43%  2.5005ms         1  2.5005ms  2.5005ms  2.5005ms  cuDeviceGetName
+                    0.09%  545.25us         1  545.25us  545.25us  545.25us  cuDeviceTotalMem
+                    0.06%  324.70us        96  3.3820us     838ns  108.19us  cuDeviceGetAttribute
+                    0.04%  212.81us         2  106.40us  99.244us  113.56us  cudaMemcpy
+                    0.00%  26.680us         1  26.680us  26.680us  26.680us  cudaDeviceSynchronize
+                    0.00%  10.546us         1  10.546us  10.546us  10.546us  cuDeviceGetPCIBusId
+                    0.00%  4.8190us         3  1.6060us     978ns  2.7240us  cuDeviceGetCount
+                    0.00%  3.7720us         1  3.7720us  3.7720us  3.7720us  cudaLaunchKernel
+                    0.00%  2.8630us         2  1.4310us  1.1170us  1.7460us  cuDeviceGet
+                    0.00%  1.2570us         1  1.2570us  1.2570us  1.2570us  cuDeviceGetUuid
