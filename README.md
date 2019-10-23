@@ -86,10 +86,10 @@ We can observe on the plot that the shortest execution time for the vectorAdd fu
 There are no significant changes at execution time for CUDA memcpy HtoD and CUDA memcpy DtoH functions.
 
 
-![alt text] (https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20ThreadsPerBlock.png)
+![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20ThreadsPerBlock.png)
 
 
-![alt text] (https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20excution%20time%20on%20ThreadsPerBlock%20for%20vectorAdd%20function.png)
+![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20excution%20time%20on%20ThreadsPerBlock%20for%20vectorAdd%20function.png)
 
 
 ## Authors
