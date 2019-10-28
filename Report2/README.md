@@ -1,1 +1,1 @@
-# Introduction-to-CUDA-and-OpenCL - Report2
+# Cuda Memory Managed Utility
