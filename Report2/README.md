@@ -1,4 +1,4 @@
-# Cuda Memory Managed Utility
+# CUDA Memory Managed Utility
 
 In our second report we will answer three very important questions about CUDA Managed Memory Utility:
 
