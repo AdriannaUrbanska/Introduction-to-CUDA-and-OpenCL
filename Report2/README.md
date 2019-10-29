@@ -10,7 +10,7 @@ In our second report we will answer three very important questions about CUDA Ma
 
 ### Question 2: How do we use Memory Managed Utility?
 
-At first, we have to allocate Unified Memory which is accesible from CPU or GPU using cudaMallocManaged function. 
+At first, we have to allocate Unified Memory, which is accesible from CPU or GPU, using cudaMallocManaged function. 
 ```
   cudaMallocManaged(&x, N*sizeof(float));
   cudaMallocManaged(&y, N*sizeof(float));
@@ -36,7 +36,7 @@ Then, we launch CUDA kernel add function to add elements of two vectors and wait
 ```
 
 
-At the end we have to delete memory using cudaFree function.
+At the end, we have to delete memory using cudaFree function.
 ```
   cudaFree(x);
   cudaFree(y);
