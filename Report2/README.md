@@ -50,14 +50,16 @@ Then, we initialized cudaDeviceProp variable and assigned to it our device's pro
   cudaGetDeviceProperties(&deviceProp, 0);
 ```
 
-
+In order to protect against inputting too large data structure we checked if size of all vector's elements is greater than total global memory. To compare it we used deviceProp.totalGlobalMem variable. 
 ```
   if( (unsigned long long) (N*sizeof(float)) >= (unsigned long long)deviceProp.totalGlobalMem) {
       fprintf(stderr, "Memory overload!\n");
       exit(EXIT_FAILURE);
   }
-     
-     
+  ```
+Exactly the same method as above we used to checked if threadsPerBlock number is greater than deviceProp.maxThreadsPerBlock and to check if blocksPerGrid number is greater than deviceProp.maxGridSize [0].
+  
+  ```   
   if( threadsPerBlock >= deviceProp.maxThreadsPerBlock){
       fprintf(stderr, "Threads overload!\n");
       exit(EXIT_FAILURE);
