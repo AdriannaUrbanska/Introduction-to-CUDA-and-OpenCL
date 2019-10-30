@@ -41,7 +41,27 @@ At the end, we have to delete memory using cudaFree function.
 
 ### Question 3: How to protect against too large data structure to be copied to GPU?
 
+```
+  cudaSetDevice(0);
+  cudaDeviceProp deviceProp;
+  cudaGetDeviceProperties(&deviceProp, 0);
 
+  if( (unsigned long long) (N*sizeof(float)) >= (unsigned long long)deviceProp.totalGlobalMem) {
+      fprintf(stderr, "Memory overload!\n");
+      exit(EXIT_FAILURE);
+  }
+     
+     
+  if( threadsPerBlock >= deviceProp.maxThreadsPerBlock){
+      fprintf(stderr, "Threads overload!\n");
+      exit(EXIT_FAILURE);
+   }
+
+  if( blocksPerGrid >= deviceProp.maxGridSize[0]){
+      fprintf(stderr, "Grid overload!\n");
+    	exit(EXIT_FAILURE);
+   }
+```
 
 
 ## Authors
