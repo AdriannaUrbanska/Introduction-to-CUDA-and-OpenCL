@@ -3,7 +3,7 @@
     #include <math.h>
 
 
-    // CUDA kernel to add elements of two arrays
+    // CUDA kernel to add elements
     __global__    void add(int N, float *x)
     {
       int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -20,7 +20,7 @@
       // Allocate Unified Memory -- accessible from CPU or GPU
       cudaMallocManaged(&x, N*sizeof(float));
 
-      // initialize x  array on the host
+      // initialize x array on the host
       for (int i = 0; i < N; i++) {
         x[i] = 1.0f;
       }
