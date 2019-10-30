@@ -16,7 +16,7 @@ At first, we have to allocate Unified Memory, which is accesible from CPU or GPU
 ```
 
 
-Our next step is to initialize x and y vectors on the host.
+Our next step is to initialize x vector on the host.
 ```
   for (int i = 0; i < N; i++) {
         x[i] = 1.0f;
@@ -24,7 +24,7 @@ Our next step is to initialize x and y vectors on the host.
 ```
 
 
-Then, we launch CUDA kernel add function to add elements of two vectors and wait for GPU to finish before accessing on host.
+Then, we launch CUDA kernel add function and wait for GPU to finish before accessing on host.
 ```
   int blockSize = 256;
   int numBlocks = (N + blockSize - 1) / blockSize;
