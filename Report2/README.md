@@ -41,11 +41,17 @@ At the end, we have to delete memory using cudaFree function.
 
 ### Question 3: How to protect against too large data structure to be copied to GPU?
 
+
+At first, we set count of devices using cudaSetDevice function. In our case we had only one device.
+Then, we initialized cudaDeviceProp variable and assigned to it our device's properties (using cudaGetDeviceProperties function).
 ```
   cudaSetDevice(0);
   cudaDeviceProp deviceProp;
   cudaGetDeviceProperties(&deviceProp, 0);
+```
 
+
+```
   if( (unsigned long long) (N*sizeof(float)) >= (unsigned long long)deviceProp.totalGlobalMem) {
       fprintf(stderr, "Memory overload!\n");
       exit(EXIT_FAILURE);
