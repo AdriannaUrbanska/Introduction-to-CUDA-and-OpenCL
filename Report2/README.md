@@ -10,7 +10,7 @@ In our second report we are going to answer three very important questions about
 
 ### Question 2: How do we use Memory Managed Utility?
 
-At first, we have to allocate Unified Memory, which is accesible from CPU or GPU, using cudaMallocManaged function. 
+At first, we have to allocate Unified Memory, which is accesible from CPU or GPU, using `cudaMallocManaged` function. 
 ```
   cudaMallocManaged(&x, N*sizeof(float));
 ```
@@ -24,7 +24,7 @@ Our next step is to initialize x vector on the host.
 ```
 
 
-Then, we launch CUDA kernel add function and wait for GPU to finish before accessing on host.
+Then, we launch CUDA kernel `add` function and wait for GPU to finish before accessing on host.
 ```
   int blockSize = 256;
   int numBlocks = (N + blockSize - 1) / blockSize;
@@ -34,7 +34,7 @@ Then, we launch CUDA kernel add function and wait for GPU to finish before acces
 ```
 
 
-At the end, we have to delete memory using cudaFree function.
+At the end, we have to delete memory using `cudaFree` function.
 ```
   cudaFree(x);
 ```
@@ -42,22 +42,22 @@ At the end, we have to delete memory using cudaFree function.
 ### Question 3: How to protect against too large data structure to be copied to GPU?
 
 
-At first, we set count of devices using cudaSetDevice function. In our case we had only one device.
-Then, we initialized cudaDeviceProp variable and assigned to it our device's properties (using cudaGetDeviceProperties function).
+At first, we set count of devices using `cudaSetDevice` function. In our case we had only one device.
+Then, we initialized `cudaDeviceProp` variable and assigned to it our device's properties (using `udaGetDeviceProperties` function).
 ```
   cudaSetDevice(0);
   cudaDeviceProp deviceProp;
   cudaGetDeviceProperties(&deviceProp, 0);
 ```
 
-In order to protect against inputting too large data structure we checked if size of all vector's elements is greater than total global memory. To compare it we used deviceProp.totalGlobalMem variable. 
+In order to protect against inputting too large data structure we checked if size of all vector's elements is greater than total global memory. To compare it we used `deviceProp.totalGlobalMem` variable. 
 ```
   if( (unsigned long long) (N*sizeof(float)) >= (unsigned long long)deviceProp.totalGlobalMem) {
       fprintf(stderr, "Memory overload!\n");
       exit(EXIT_FAILURE);
   }
   ```
-Exactly the same method as above we used to checked if threadsPerBlock number is greater than deviceProp.maxThreadsPerBlock and to check if blocksPerGrid number is greater than deviceProp.maxGridSize [0].
+Exactly the same method as above we used to checked if `threadsPerBlock` number is greater than `deviceProp.maxThreadsPerBlock` and to check if `blocksPerGrid` number is greater than `deviceProp.maxGridSize [0]`.
   
   ```   
   if( threadsPerBlock >= deviceProp.maxThreadsPerBlock){
