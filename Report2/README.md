@@ -8,6 +8,11 @@ In our second report we are going to answer three very important questions about
 
 ### Question 1: How large data structures are handled?
 
+With increasing precision, the memory for saving data increases. Because of this, many types of variables were created and we decide how accurate data we need.
+![https://www.geeksforgeeks.org/c-data-types/](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report2/img/data%20types.png)
+
+
+
 ### Question 2: How do we use Memory Managed Utility?
 
 At first, we have to allocate Unified Memory, which is accesible from CPU or GPU, using `cudaMallocManaged` function. 
