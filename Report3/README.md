@@ -20,6 +20,14 @@ To analyze our results we used NVIDIA Visual Profiler output.
 ### 4. Access first by the CPU then the GPU
 ![](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report3/img/CPUthenGPU_Img.png)
 
+### 5. Summary
+
+	                                 Duration of cudaMallocManaged [ms]
+           Access only by the CPU	           308.34
+           Access only by the GPU	           339.69
+           Access first by CPU then the GPU	           339.94
+           Access first by GPU then the CPU	           325.19
+
 nie wiem co robić to chociaż wypisze tutaj róznice pomiedzy tymi porgramami
 ## vector_add_standard
 
