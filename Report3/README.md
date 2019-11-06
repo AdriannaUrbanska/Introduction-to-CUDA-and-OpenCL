@@ -22,11 +22,11 @@ To analyze our results we used NVIDIA Visual Profiler output.
 
 ### 5. Summary
 
-	                                 Duration of cudaMallocManaged [ms]
-           Access only by the CPU	           308.34
-           Access only by the GPU	           339.69
-           Access first by CPU then the GPU	           339.94
-           Access first by GPU then the CPU	           325.19
+	                                 		Duration of cudaMallocManaged [ms]
+           Access only by the CPU				308.34
+           Access only by the GPU				339.69
+           Access first by CPU then the GPU			339.94
+           Access first by GPU then the CPU			325.19
 
 nie wiem co robić to chociaż wypisze tutaj róznice pomiedzy tymi porgramami
 ## vector_add_standard
