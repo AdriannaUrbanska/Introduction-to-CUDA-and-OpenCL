@@ -1,4 +1,4 @@
-_global__
+__global__
 void deviceKernel(int *a, int N)
 {
   int idx = threadIdx.x + blockIdx.x * blockDim.x;
@@ -6,7 +6,7 @@ void deviceKernel(int *a, int N)
 
   for (int i = idx; i < N; i += stride)
   {
-    a[i] = 1;
+    a[i] = 2;
   }
 }
 
@@ -27,10 +27,11 @@ int main()
   int threadsPerBlock = 256;
   int blocksPerGrid = (N+threadsPerBlock-1)/threadsPerBlock;
   cudaMallocManaged(&a, size);
-  hostFunction(a, N);  
+  //hostFunction(a, N);  
   deviceKernel<<<threadsPerBlock, blocksPerGrid>>>(a,N);
   cudaDeviceSynchronize();
-  /*
+  hostFunction(a,N);
+   /*
    * Conduct experiments to learn more about the behavior of
    * `cudaMallocManaged`.
    *
