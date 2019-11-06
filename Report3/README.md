@@ -22,6 +22,7 @@ To analyze our results we used NVIDIA Visual Profiler output.
 
 nie wiem co robić to chociaż wypisze tutaj róznice pomiedzy tymi porgramami
 ## vector_add_standard
+
 Nvprof:
 ```
            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
@@ -45,6 +46,7 @@ Nvprof:
 ```
 ## vector_add_prefetch_gpu
 Add new function ```cudaMemPrefetchAsync(a, size, deviceId);```
+
 Nvprof:
 ```
            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
@@ -91,8 +93,9 @@ Nvprof:
 ```
 ## vector_add_prefetch_gpucpu_init_gpu.cu
 Add ```cudaMemPrefetchAsync(c, size, cudaCpuDeviceId);``` function.
+Nvprof:
 ```
- GPU activities:   50.82%  2.5691ms         1  2.5691ms  2.5691ms  2.5691ms  addVectorsInto(float*, float*, float*, int)
+GPU activities:   50.82%  2.5691ms         1  2.5691ms  2.5691ms  2.5691ms  addVectorsInto(float*, float*, float*, int)
                    49.18%  2.4862ms         3  828.72us  826.85us  830.02us  initWith(float, float*, int)
       API calls:   81.88%  337.30ms         3  112.43ms  22.978us  337.23ms  cudaMallocManaged
                    11.29%  46.522ms         4  11.631ms  953.26us  43.600ms  cudaMemPrefetchAsync
@@ -109,6 +112,7 @@ Add ```cudaMemPrefetchAsync(c, size, cudaCpuDeviceId);``` function.
                     0.00%  1.6760us         1  1.6760us  1.6760us  1.6760us  cudaDeviceGetAttribute
                     0.00%  1.1870us         1  1.1870us  1.1870us  1.1870us  cuDeviceGetUuid
                     0.00%     908ns         1     908ns     908ns     908ns  cudaGetLastError
+
 
 ```
 ## Authors
