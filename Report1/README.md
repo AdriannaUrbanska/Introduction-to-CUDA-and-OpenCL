@@ -77,7 +77,7 @@
 ## Results
 
 ### 1. Dependence of the execution time on size of the vector
-![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20size%20of%20the%20vector.png)
+![](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20size%20of%20the%20vector.png)
 
 
 ### 2. Dependence of the execution time on blocks number
