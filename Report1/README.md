@@ -109,7 +109,7 @@ That modification is included in [grid_debug2.cu](https://github.com/AdriannaUrb
 
 We were changing number of threadsPerBlock from 128 to 8388608. The size of the vector was left to be constant and equal to 102173.
 
-![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/CudaMalloc/Images/Dependence%20of%20the%20execution%20time%20on%20ThreadsPerBlock.png)
+![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report1/Images/Dependence%20of%20the%20execution%20time%20on%20ThreadsPerBlock.png)
 
 
 We can see that there are no significant changes at execution time for CUDA memcpy HtoD and CUDA memcpy DtoH functions.
@@ -117,6 +117,8 @@ We can see that there are no significant changes at execution time for CUDA memc
 ![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report1/Images/Dependence%20of%20the%20excution%20time%20on%20ThreadsPerBlock%20for%20vectorAdd%20function.png)
 
 However, when it comes to vectorAdd function we can notice that after threadsPerBlock's value is equal to 131072 execution time started increase rapidly. 
+
+
 
 
 All we can say is that choosing the right parameters is very complex problem and every data structure requires separated analysis and making some tests to check which configuration give as the most optimal solution.
