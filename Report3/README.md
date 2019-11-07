@@ -29,6 +29,8 @@ To analyze our results we used NVIDIA Visual Profiler output.
            Access only by the GPU				339.69
            Access first by CPU then the GPU			339.94
            Access first by GPU then the CPU			325.19
+
+As we can see the best result is when Unified Memory is accessed is only by the CPU (308.34ms).
 	   
 ## Second part
 
