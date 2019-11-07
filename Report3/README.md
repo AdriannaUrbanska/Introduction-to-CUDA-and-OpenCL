@@ -33,7 +33,7 @@ To analyze our results we used NVIDIA Visual Profiler output.
 ## Second part
 
 In the second part 
-## vector_add_standard
+### 2.1 vector_add_standard
 
 Nvprof:
 ```
@@ -56,7 +56,7 @@ Nvprof:
 
 
 ```
-## vector_add_prefetch_gpu
+### 2.2 vector_add_prefetch_gpu
 Add new function ```cudaMemPrefetchAsync(a, size, deviceId);```
 
 Nvprof:
@@ -79,7 +79,7 @@ Nvprof:
                     0.00%  1.2570us         1  1.2570us  1.2570us  1.2570us  cuDeviceGetUuid
                     0.00%     908ns         1     908ns     908ns     908ns  cudaGetLastError
 ```
-## vector_add_prefetch_gpu_init_gpu
+### 2.3 vector_add_prefetch_gpu_init_gpu
 Change CPU function ```initWith(3, a, N);``` into GPU kernel function ```initWith<<<numberOfBlocks, threadsPerBlock>>>(3, a, N);```
 Nvprof:
 ```
@@ -103,7 +103,7 @@ Nvprof:
                     0.00%     838ns         1     838ns     838ns     838ns  cudaGetLastError
 
 ```
-## vector_add_prefetch_gpucpu_init_gpu.cu
+### 2.4 vector_add_prefetch_gpucpu_init_gpu.cu
 Add ```cudaMemPrefetchAsync(c, size, cudaCpuDeviceId);``` function.
 Nvprof:
 ```
@@ -127,6 +127,15 @@ GPU activities:   50.82%  2.5691ms         1  2.5691ms  2.5691ms  2.5691ms  addV
 
 
 ```
+### 2.5 Summary
+
+						time of addVectorsInto [ms]	time of cudaMallocManaged [ms]
+	vector_add_standard				154.35				335.35
+	vector_add_prefetch_gpu				2.56				337.15
+	vector_add_prefetch_gpu_init_gpu		2.57				302.58
+	vector_add_prefetch_cpugpu_init_gpu		2.57				337.30
+
+
 ## Authors
 
 Adrianna Urbańska
