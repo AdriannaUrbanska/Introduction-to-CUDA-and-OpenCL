@@ -36,8 +36,8 @@ In the second part we tested`cudaMemPrefetchAsync` function behavior in vector_a
 
 ### 2.1 vector_add_standard
 
-In this part we checked behaviour of the program when there was no `cudaMemPrefetchAsync` function ([vector_add_standard](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report3/src/vector_add_standard.cu) file). 
-We allocated memory for vectors a, b, c using cudaMallocManaged function. Then we initialized values of the vectors using  CPU's initWith function. At the end we added vectors using kernel's addVectorsInto function.
+In the first part we checked behaviour of the program when there was no `cudaMemPrefetchAsync` function ([vector_add_standard](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report3/src/vector_add_standard.cu) file). 
+We allocated memory for vectors a, b, c using `cudaMallocManaged` function. Then we initialized values of the vectors using  CPU's `initWith` function. At the end we added vectors using kernel's `addVectorsInto` function.
 
 
 Nvprof analysis:
@@ -62,9 +62,10 @@ Nvprof analysis:
 
 ```
 ### 2.2 vector_add_prefetch_gpu
-Add new function ```cudaMemPrefetchAsync(a, size, deviceId);```
 
-Nvprof:
+In the second part we added new function `cudaMemPrefetchAsync` after initializing values of the vectors ([vector_add_prefetch_gpu](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report3/src/vector_add_prefetch_gpu.cu) file).
+
+Nvprof analysis:
 ```
            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
  GPU activities:  100.00%  2.5615ms         1  2.5615ms  2.5615ms  2.5615ms  addVectorsInto(float*, float*, float*, int)
@@ -85,8 +86,10 @@ Nvprof:
                     0.00%     908ns         1     908ns     908ns     908ns  cudaGetLastError
 ```
 ### 2.3 vector_add_prefetch_gpu_init_gpu
-Change CPU function ```initWith(3, a, N);``` into GPU kernel function ```initWith<<<numberOfBlocks, threadsPerBlock>>>(3, a, N);```
-Nvprof:
+
+In the third part we changed CPU function `initWith(3, a, N)` into GPU kernel function `initWith<<<numberOfBlocks, threadsPerBlock>>>(3, a, N)`and we used it after `cudaMemPrefetchAsync` function ([vector_add_prefetch_gpu_init_gpu](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report3/src/vector_add_prefetch_gpu_init_gpu.cu) file). 
+
+Nvprof analysis:
 ```
             Type  Time(%)      Time     Calls       Avg       Min       Max  Name
  GPU activities:   50.77%  2.5666ms         1  2.5666ms  2.5666ms  2.5666ms  addVectorsInto(float*, float*, float*, int)
@@ -109,8 +112,10 @@ Nvprof:
 
 ```
 ### 2.4 vector_add_prefetch_gpucpu_init_gpu.cu
-Add ```cudaMemPrefetchAsync(c, size, cudaCpuDeviceId);``` function.
-Nvprof:
+
+In the last part we added one more `cudaMemPrefetchAsync` function after adding two vectors and checking for errors  ([vector_add_prefetch_gpucpu_init_gpu](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report3/src/vector_add_prefetch_gpucpu_init_gpu.cu) file).
+
+Nvprof analysis:
 ```
 GPU activities:   50.82%  2.5691ms         1  2.5691ms  2.5691ms  2.5691ms  addVectorsInto(float*, float*, float*, int)
                    49.18%  2.4862ms         3  828.72us  826.85us  830.02us  initWith(float, float*, int)
@@ -140,6 +145,7 @@ GPU activities:   50.82%  2.5691ms         1  2.5691ms  2.5691ms  2.5691ms  addV
 	vector_add_prefetch_gpu_init_gpu		2.57				302.58
 	vector_add_prefetch_cpugpu_init_gpu		2.57				337.30
 
+As we can see the best results are when...
 
 ## Authors
 
