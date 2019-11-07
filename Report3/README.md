@@ -32,10 +32,15 @@ To analyze our results we used NVIDIA Visual Profiler output.
 	   
 ## Second part
 
-In the second part 
+In the second part we tested`cudaMemPrefetchAsync` function behavior in vector_add programs.
+
 ### 2.1 vector_add_standard
 
-Nvprof:
+In this part we checked behaviour of the program when there was no `cudaMemPrefetchAsync` function ([vector_add_standard](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report3/src/vector_add_standard.cu) file). 
+We allocated memory for vectors a, b, c using cudaMallocManaged function. Then we initialized values of the vectors using  CPU's initWith function. At the end we added vectors using kernel's addVectorsInto function.
+
+
+Nvprof analysis:
 ```
            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
  GPU activities:  100.00%  154.35ms         1  154.35ms  154.35ms  154.35ms  addVectorsInto(float*, float*, float*, int)
