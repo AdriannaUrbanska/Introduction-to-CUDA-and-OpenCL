@@ -147,7 +147,7 @@ GPU activities:   50.82%  2.5691ms         1  2.5691ms  2.5691ms  2.5691ms  addV
 	vector_add_prefetch_gpu_init_gpu		2.57				302.58
 	vector_add_prefetch_cpugpu_init_gpu		2.57				337.30
 
-As we can see the best results are when...
+As we can see the best results are when we used `cudaMemPrefetchAsync` function first and when we initialized values of the vectors using kernel function after that.
 
 ## Authors
 
