@@ -1,72 +1,124 @@
 #include <iostream>
 #include <stdio.h>
 #include <cuda_runtime.h>
+#define MIN(a, b) (a<b?a:b)
+#define BLOCK_SIZE 16
 
-#define MIN(a, b) (a < b ? a : b)
+struct Matrix {
+	int height;
+	int width;
+	int *el;
+	int stride;
+	
+	__host__ __device__
+	Matrix(int height, int width, int stride ): height(height), width(width),stride(stride){}
+	
+	__host__ __device__	
+	Matrix(const Matrix &a): height(a.height), width(a.width),el(a.el),stride(a.stride){}
+	
+	__device__ 
+	float getElement(int row, int col){
+		return el[row * stride + col];
+	}
+	
+	__host__ __device__
+	void operator =(const Matrix &a){height = a.height; width = a.width; el = a.el; stride = a.stride;}
+
+	__device__
+	 void setElement(int row, int col, int val){
+		el[row * stride + col] = val;
+	}
+	
+	__device__
+	 Matrix cutMatrix(int row, int col){
+		Matrix tmp(BLOCK_SIZE, BLOCK_SIZE, stride);
+		
+		tmp.el = &el[stride * BLOCK_SIZE * row + BLOCK_SIZE * col];
+		
+		return tmp;
+	}
+	
+	__host__  
+	 void writeOut(){
+		for(int i = 0; i < height; i++){
+			std::cout<<"| ";
+		 	for(int j = 0; j < width; j++){
+		 		std::cout<<el[i * width + j]<<" ";
+		 	}
+			std::cout<<"|"<<std::endl;
+		 }
+		std::cout<<"\n";
+	}
+};
+
 
 __global__
-void MatrixMulKernel(const int* M,const int* N, int* P, int Width) {
-	int Row = blockIdx.y * blockDim.y + threadIdx.y;
-	int Col = blockIdx.x * blockDim.x + threadIdx.x;
+void MatrixMulKernel(Matrix a,Matrix b, Matrix c) {
+	int cutRow = blockIdx.y ;
+	int cutCol = blockIdx.x;
 
-	if ((Row < Width) && (Col < Width))
-	{
-		int Pvalue = 0; 
-		for (int k = 0; k < Width; ++k)
-		{
-			Pvalue += M[Row * Width + k] * N[k * Width + Col];
-		}
-		P[Row * Width + Col] = Pvalue;
+	int row = threadIdx.y;
+	int col = threadIdx.x;
+	
+	int temp = 0;
+	
+	Matrix cutMatC = c.cutMatrix(cutRow, cutCol);
+	
+	for( int v = 0; v < ((a.width + BLOCK_SIZE - 1)/BLOCK_SIZE); ++v){
+		Matrix cutMatA = a.cutMatrix(cutRow, v);	//cut input matrix vector which can fit inside block
+		Matrix cutMatB = b.cutMatrix(v, cutCol);	
+	
+		__shared__ int A[BLOCK_SIZE][BLOCK_SIZE];	//Matrix wchich can share memory between threads
+		__shared__ int B[BLOCK_SIZE][BLOCK_SIZE];
+			
+		A[row][col] = cutMatA.getElement(row, col);
+		B[row][col] = cutMatB.getElement(row, col);
+		__syncthreads();				//make sure that every metrix is filled
+	
+		for (int i = 0; i < BLOCK_SIZE; ++i){
+			temp += A[row][i] * B[i][col];
+		}		
+		__syncthreads();
+	
 	}
 
+	if(row < c.height && col < c.width)
+		cutMatC.setElement(row, col, temp);
 }
 
 int main(){
-	int *a, *g, *ag;
-	int N = 1000;
-	int thread = 256;
-	dim3 threadsPerBlock(thread,thread);
-	dim3 blocksPerGrid(MIN(32, (N + thread - 1) / thread), MIN(32, (N + thread - 1) / thread));
-
-	cudaMallocManaged(&a,N * N * sizeof(int));
-	cudaMallocManaged(&g, N * N * sizeof(int));
-	cudaMallocManaged(&ag, N * N * sizeof(int));
-
+	int N = 6;
+	Matrix a(N, N, N), g(N, N, N), ag(N, N, N);
+	
+	cudaError_t err = cudaSuccess;	
+	
+	dim3 threadsPerBlock(BLOCK_SIZE,BLOCK_SIZE);
+	dim3 blocksPerGrid((N + BLOCK_SIZE -1)  / BLOCK_SIZE ,(N + BLOCK_SIZE - 1) / BLOCK_SIZE  );
+	
+	cudaMallocManaged(&a.el,N * N * sizeof(int));
+	cudaMallocManaged(&g.el, N * N * sizeof(int));
+	cudaMallocManaged(&ag.el, N * N * sizeof(int));
+	
 	for(int i = 0; i < N; i++){
 		for(int j = 0; j<N; j++){
-			a[i*N+j] = 2; //było a[i*j+i] zamiast a[i*size+j]	aaaaaaaaaaaaaaaa kurde głupi błąd 
-			g[i*N+j] = 3;
+			a.el[i*N+j] = 1;  
+			g.el[i*N+j] = 2;
 		}
-	 }
-	 MatrixMulKernel<<<blocksPerGrid, threadsPerBlock>>>( a, g, ag, N);
-     cudaDeviceSynchronize();
+	}
 
+	MatrixMulKernel<<<blocksPerGrid, threadsPerBlock>>>( a, g, ag);
+	
+     	cudaDeviceSynchronize();
+	if (err != cudaSuccess){	
+        	fprintf(stderr, "Failed to launch vectorAdd kernel (error code %s)!\n", cudaGetErrorString(err));
+        	exit(EXIT_FAILURE);
+    	}
+	
+	a.writeOut();	
+	ag.writeOut();
 
-//-----------------------------------------------------Writing out-------------------------------------------------------
-	 for(int i = 0; i < N; i++){
-		std:: cout<<"| ";
-	 		for(int j = 0; j < N; j++){
-	 			std::cout<<a[i * size + j]<<" ";
-	 		}
-			std:: cout<<"|"<<std::endl;
-	 	}
-	 std::cout<<"--------------------------------"<<std::endl;
-	 for(int i = 0; i < N; i++){
-		 std::cout<<"| ";
-	 		for(int j = 0; j < N; j++){
-	 			std::cout<<g[i * size + j]<<" ";
-	 		}
-			 std::cout<<"|"<<std::endl;
-	 	}
-	 std::cout<<"--------------------------------"<<std::endl;
-	 for(int i = 0; i < N; i++){
-		 std::cout<<"| ";
-	 		for(int j = 0; j < N; j++){
-	 			std::cout<<ag[i * size + j]<<" ";
-	 		}
-			 std::cout<<"|"<<std::endl;
-	 	}
-	    cudaFree(a);
-	    cudaFree(g);
-	    cudaFree(ag);
+			
+	cudaFree(a.el);
+	cudaFree(g.el);
+	cudaFree(ag.el);
 }	
