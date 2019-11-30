@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <cuda_runtime.h>
 #define MIN(a, b) (a<b?a:b)
-#define BLOCK_SIZE 16
+#define BLOCK_SIZE 32
 
 struct Matrix {
 	int height;
@@ -34,7 +34,6 @@ struct Matrix {
 		Matrix tmp(BLOCK_SIZE, BLOCK_SIZE, stride);
 		
 		tmp.el = &el[stride * BLOCK_SIZE * row + BLOCK_SIZE * col];
-		
 		return tmp;
 	}
 	
@@ -57,6 +56,8 @@ void MatrixMulKernel(Matrix a,Matrix b, Matrix c) {
 	int cutRow = blockIdx.y ;
 	int cutCol = blockIdx.x;
 
+	int fRow = blockIdx.y * blockDim.y + threadIdx.y;
+	int fCol = blockIdx.x * blockDim.x + threadIdx.x;	
 	int row = threadIdx.y;
 	int col = threadIdx.x;
 	
@@ -70,9 +71,20 @@ void MatrixMulKernel(Matrix a,Matrix b, Matrix c) {
 	
 		__shared__ int A[BLOCK_SIZE][BLOCK_SIZE];	//Matrix wchich can share memory between threads
 		__shared__ int B[BLOCK_SIZE][BLOCK_SIZE];
-			
-		A[row][col] = cutMatA.getElement(row, col);
-		B[row][col] = cutMatB.getElement(row, col);
+		if((row  < a.height) && ((col + v * BLOCK_SIZE) < a.width)){ 		
+			A[row][col] = cutMatA.getElement(row, col);
+		}
+		else{
+			A[row][col] = 0;
+		}
+
+		if((col < b.width) && ((row + v * BLOCK_SIZE) < b.height)){
+			B[row][col] = cutMatB.getElement(row, col);
+		}
+		else{
+			B[row][col] = 0;
+		}
+
 		__syncthreads();				//make sure that every metrix is filled
 	
 		for (int i = 0; i < BLOCK_SIZE; ++i){
@@ -82,18 +94,18 @@ void MatrixMulKernel(Matrix a,Matrix b, Matrix c) {
 	
 	}
 
-	if(row < c.height && col < c.width)
-		cutMatC.setElement(row, col, temp);
+	if(fRow < c.height && fCol < c.width)
+		c.setElement(fRow, fCol, temp);
 }
 
 int main(){
-	int N = 6;
+	int N = 37;
 	Matrix a(N, N, N), g(N, N, N), ag(N, N, N);
 	
 	cudaError_t err = cudaSuccess;	
 	
 	dim3 threadsPerBlock(BLOCK_SIZE,BLOCK_SIZE);
-	dim3 blocksPerGrid((N + BLOCK_SIZE -1)  / BLOCK_SIZE ,(N + BLOCK_SIZE - 1) / BLOCK_SIZE  );
+	dim3 blocksPerGrid((N + BLOCK_SIZE - 1)  / BLOCK_SIZE ,(N + BLOCK_SIZE - 1) / BLOCK_SIZE  );
 	
 	cudaMallocManaged(&a.el,N * N * sizeof(int));
 	cudaMallocManaged(&g.el, N * N * sizeof(int));
@@ -114,7 +126,8 @@ int main(){
         	exit(EXIT_FAILURE);
     	}
 	
-	a.writeOut();	
+	//a.writeOut();	
+	//g.writeOut();
 	ag.writeOut();
 
 			
