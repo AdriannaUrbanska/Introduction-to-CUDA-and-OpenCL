@@ -11,8 +11,13 @@ In our code ([matrixMultiplication](https://github.com/AdriannaUrbanska/Introduc
 * writeOut() function to print elements of the matrix - available from the host
 * functions: setElement(int,int,int) - to set value of a specific element, getElement(int,int) - to get value of a specific element, cutMatrix(int,int) - to get a part of the matrix (new smaller matrix which have width and height equal to BLOCK_SIZE)- all available from the device
 
-Then we have __global__ void MatrixMulKernel(Matrix,Matrix,Matrix) function.
+Then we have `__global__ void MatrixMulKernel(Matrix a, Matrix b,Matrix c)` function. At first, we created a `cutMatC` matrix as a part of resulting matrix `c`.
 
+```
+Matrix cutMatC = c.cutMatrix(cutRow, cutCol);
+```
+
+Next we created a for loop where a main part of the multiplication takes part.
 
 ## Authors
 
