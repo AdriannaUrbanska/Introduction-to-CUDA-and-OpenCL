@@ -68,6 +68,10 @@ In `main()` function we created `a`,`g` and `ag` matrices (the last one is the r
 We launched kernel `MatrixMulKernel` function for (BLOCK_SIZE, BLOCK_SIZE) thread per block and `( (N + BLOCK_SIZE - 1)/BLOCK_SIZE, (N + BLOCK_SIZE - 1)/BLOCK_SIZE )` blocks per grid and synchronized threads using `cudaDeviceSynchronize()`.
 
 ```
+	dim3 threadsPerBlock(BLOCK_SIZE,BLOCK_SIZE);
+	dim3 blocksPerGrid((N + BLOCK_SIZE - 1) / BLOCK_SIZE ,(N + BLOCK_SIZE - 1) / BLOCK_SIZE );
+
+	//...	
 	MatrixMulKernel<<<blocksPerGrid, threadsPerBlock>>>( a, g, ag);
 	cudaDeviceSynchronize();
 ```
