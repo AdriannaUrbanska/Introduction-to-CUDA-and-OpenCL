@@ -17,7 +17,7 @@ Then we have `__global__ void MatrixMulKernel(Matrix a, Matrix b,Matrix c)` func
 Matrix cutMatC = c.cutMatrix(cutRow, cutCol);
 ```
 
-Next we created a for loop where a main part of the multiplication takes part. In every execution of the loop we created a `cutMatA` and `cutMatB` matrices to keep a specific part of the origin matices `a` and `b`. Then we created a `A`, `B` matrices which can share memory between threads:
+Next we created a for loop where a main part of the multiplication takes part. In every execution of the loop we created a `cutMatA` and `cutMatB` matrices to keep a specific part of the origin matices `a` and `b`. Then we created `A`, `B` matrices which can share memory between threads:
 
 ```
 __shared__ int A[BLOCK_SIZE][BLOCK_SIZE];	
@@ -58,6 +58,20 @@ At the end of the whole function, if the threads were still in the matrix `c` ar
 ```
 c.setElement(fRow, fCol, temp);
 ```
+
+In main() function we created `a`,`g` and `ag` matrices (the last one is the result of the multiplication) and allocated memory for them using `cudaMallaocManaged` function. Every matrix has the same size here.
+
+```
+Matrix a(N, N, N), g(N, N, N), ag(N, N, N);
+```
+
+We launched kernel `MatrixMulKernel` function for (BLOCK_SIZE, BLOCK_SIZE) thread per block and `( (N + BLOCK_SIZE - 1)/BLOCK_SIZE, (N + BLOCK_SIZE - 1)/BLOCK_SIZE )` blocks per grid and synchronized threads using `cudaDeviceSynchronize()`.
+
+```
+MatrixMulKernel<<<blocksPerGrid, threadsPerBlock>>>( a, g, ag);
+cudaDeviceSynchronize();
+```
+
 
 
 ## Authors
