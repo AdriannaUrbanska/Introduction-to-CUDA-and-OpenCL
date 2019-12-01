@@ -59,7 +59,7 @@ At the end of the whole function, if the threads were still in the matrix `c` ar
 	c.setElement(fRow, fCol, temp);
 ```
 
-In main() function we created `a`,`g` and `ag` matrices (the last one is the result of the multiplication) and allocated memory for them using `cudaMallaocManaged` function. Every matrix has the same size here.
+In `main()` function we created `a`,`g` and `ag` matrices (the last one is the result of the multiplication) and allocated memory for them using `cudaMallaocManaged` function. Every matrix has the same size here.
 
 ```
 	Matrix a(N, N, N), g(N, N, N), ag(N, N, N);
