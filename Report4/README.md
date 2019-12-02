@@ -80,8 +80,9 @@ We launched kernel `MatrixMulKernel` function for (BLOCK_SIZE, BLOCK_SIZE) threa
 
 ### Dependence of the execution time on BLOCK_SIZE for 64x64 matrix size
 
-![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report4/img/block_size2.png)
+![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report4/img/block_size3.png)
 
+As we can see on the plot the best results are when we executing our program with BLOCK_SIZE equal to 16 or 32.
 
 ### Dependence of the execution time on matrix size for BLOCK_SIZE = 32
 
