@@ -76,6 +76,16 @@ We launched kernel `MatrixMulKernel` function for (BLOCK_SIZE, BLOCK_SIZE) threa
 	cudaDeviceSynchronize();
 ```
 
+## Results from nvprof tool
+
+### Dependence of the execution time on BLOCK_SIZE for 64x64 matrix size
+
+![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report4/img/block_size.png)
+
+
+### Dependence of the execution time on matrix size for BLOCK_SIZE = 32
+
+![alt text](https://github.com/AdriannaUrbanska/Introduction-to-CUDA-and-OpenCL/blob/master/Report4/img/matrix_size.png)
 
 
 ## Authors
