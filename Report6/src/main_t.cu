@@ -1,3 +1,4 @@
+#define N 536870912
 #include <cuda_runtime.h>
 #include <iostream>
 #include <stdio.h>
