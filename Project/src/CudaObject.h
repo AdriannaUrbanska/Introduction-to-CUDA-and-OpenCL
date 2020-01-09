@@ -14,20 +14,20 @@ class CudaObject{
 	size_struct size;
 
 //--------------------------------- Single Threaded Methods ---------------------------------
-	Manager( T ** );
+public:
+	CudaObject( T **,int, int );
+	~CudaObject()
 	void add( T ** );
 	void subtrack( T ** );
 	void miltiply( T ** );
 	void inverse( );
 	void eigenValues( );
-
+	void show();
 	
 //-------------------------------------- Cuda Methods ---------------------------------------
-	__global__ void add( T ** );
-	__global__ void subtrack( T ** );
-	__global__ void miltiply( T ** );
-	__global__ void inverse( );
-	__global__ void eigenValues( );
-
-
+	__global__ void c_add( T ** );
+	__global__ void c_subtrack( T ** );
+	__global__ void c_multiply( T ** );
+	__global__ void c_inverse( );
+	__global__ void c_eigenValues( );
 };
