@@ -1,7 +1,7 @@
 # A simple calculator for matrices - CUDA Project
 
 In order to summarize the knowledge acquired during the CUDA course we prepared a simple application for matrices.
-We created four operation, which can be performed both on CPU and GPU
+We created four operations, which can be performed both on CPU and GPU
 1. Addition of the matrices in the same size
 2. Substraction of the two matrices in the same size
 3. Multiplication of the two matrices where the size of column of the first one is equal to the size of rows of the second one
