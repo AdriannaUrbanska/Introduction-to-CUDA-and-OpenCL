@@ -15,15 +15,12 @@
 
 class CudaObject {
 
-	int threadsPerBlock = 256;
-	int blocksPerGrid = 32;
 public:
 	int size_x;
 	int size_y;
 	int *data;
 	int stride;
 	int bytes;
-	int SM = 1;
 	
 	__host__ __device__
 	CudaObject(int x, int y, int stride ): size_x(x), size_y(y),stride(stride){}
@@ -125,17 +122,31 @@ public:
 		}
 	}
 
+	void tranCpu(CudaObject &iData){
+
+	 	int x = iData.size_x;
+		int y = iData.size_y;
+
+		this->setSize(y,x);
+
+		for(int n = 0; n < x * y; n++){
+			int i = n/x;
+			int j = n%x;
+			this->data[n] = iData.data[y * j + i];
+		}
+	}
+
 };
 
 __global__ void add(int *fData, int *sData, int *oData, int x, int y){
 
-		  int index = threadIdx.x + blockIdx.x * blockDim.x;
-		  int stride = blockDim.x * gridDim.x;
-
-		  for(int i = index; i < x*y; i += stride)
-		  {
-			oData[i] = fData[i] + sData[i];
-		  }
+	int index = threadIdx.x + blockIdx.x * blockDim.x;
+	int stride = blockDim.x * gridDim.x;
+	
+	for(int i = index; i < x*y; i += stride)
+	{
+		oData[i] = fData[i] + sData[i];
+	}
 }
 
 __global__ void sub(int *fData, int *sData, int *oData, int x, int y){
@@ -143,14 +154,30 @@ __global__ void sub(int *fData, int *sData, int *oData, int x, int y){
 	  int index = threadIdx.x + blockIdx.x * blockDim.x;
 	  int stride = blockDim.x * gridDim.x;
 
-	  for(int i = index; i < x*y; i += stride)
+	  for(int i = index; i < x * y; i += stride)
 	  {
 	    oData[i] = fData[i] - sData[i];
 	  }
-}	
+}
+
+__global__ void tran(CudaObject iData, CudaObject oData){
+
+	int index = threadIdx.x + blockIdx.x * blockDim.x;
+	int stride = blockDim.x * gridDim.x;
+	int x = iData.size_x;
+	int y = iData.size_y;
+
+	for(int n = index; n < x * y; n += stride){
+		int i = n/x;
+		int j = n%x;
+		oData.data[n] = iData.data[y * j + i];
+	}
+}
+
+	
 
 __global__
-void MatrixMulKernel(CudaObject a,CudaObject b, CudaObject c) {
+void mul(CudaObject a,CudaObject b, CudaObject c) {
 	int cutRow = blockIdx.y ;
 	int cutCol = blockIdx.x;
 
@@ -205,7 +232,10 @@ void OperationsInfo()
 	std::cout<<"4. Matrix substraction on GPU"<<std::endl;
 	std::cout<<"5. Matrix multiplication on CPU"<<std::endl;
 	std::cout<<"6. Matrix multiplication on GPU"<<std::endl;
+	std::cout<<"7. Matrix transposition on CPU"<<std::endl;
+	std::cout<<"8. Matrix transposition on GPU"<<std::endl;
 }
+
 
 void Init(CudaObject &oData, int val)
 {
@@ -307,12 +337,35 @@ int main(){
 				std::cout<<"Size_x of the first matrix and size_y of the second matrix have to be equal!"<<std::endl;
 			}
 			else{
-				MatrixMulKernel<<<blocksPerGrid, threadsPerBlock>>>(fData, sData, oData);	
+				mul<<<blocksPerGrid, threadsPerBlock>>>(fData, sData, oData);	
 				cudaDeviceSynchronize();
 				oData.writeOut();
 			}			
 			break;
+		case 7:
+			std::cout<<"Transposition of the first matrix: "<<std::endl;
+			oData.tranCpu(fData);
+			oData.writeOut();
 
+			std::cout<<"Transposition of the second matrix: "<<std::endl;	
+			oData.tranCpu(sData);
+			oData.writeOut();
+		
+			break;
+		case 8:
+			std::cout<<"Transposition of the first matrix: "<<std::endl;
+			oData.setSize(M_1,N_1);
+			tran<<<blocksPerGrid, threadsPerBlock>>>(fData, oData);	
+			cudaDeviceSynchronize();
+			oData.writeOut();
+
+			std::cout<<"Transposition of the second matrix: "<<std::endl;
+			oData.setSize(M_2,N_2);
+			tran<<<blocksPerGrid, threadsPerBlock>>>(sData, oData);	
+			cudaDeviceSynchronize();
+			oData.writeOut();
+		
+			break;
 		default:
 			std::cout<<"Wrong number entered!"<<std::endl;
 			break;
