@@ -9,7 +9,7 @@ We created four operation, which can be performed both on CPU and GPU
 
 ## Code
 
-We created CudaObject class, which contains properties of a single matrix:
+At the beginning, we created CudaObject class, which contains properties of a single matrix:
 
 ```
 class CudaObject {
@@ -44,6 +44,40 @@ public:
   
   __host__  
 	void writeOut();                              //method which prints the matrix
+};
+```
+
+Then, we create kernels for operations on the GPU:
+```
+__global__ void add(int *fData, int *sData, int *oData, int x, int y); 	//Addition of the matrices on the GPU
+__global__ void sub(int *fData, int *sData, int *oData, int x, int y); 	//Substraction of th ematrices on the GPU
+__global__ void mul(CudaObject a,CudaObject b, CudaObject c); 		//Multiplication of th ematrices on the GPU
+__global__ void tran(CudaObject iData, CudaObject oData); 		//Transposition of th ematrices on the GPU
+```
+
+In 'main()' function we provided a possibilities for user to enter sizes of the two matrices and values for initialization and to choose which operation to performance:
+
+```
+Enter the values of size_x, size_y of the first matrix and value to filled matrix:
+>
+>
+>
+
+Enter the values of size_x, size_y of the second matrix and value to filled matrix:
+>
+>
+>
+
+Choose an operation:
+1. Matrix addition on CPU
+2. Matrix addition on GPU
+3. Matrix substraction on CPU
+4. Matrix substraction on GPU
+5. Matrix multiplication on CPU
+6. Matrix multiplication on GPU
+7. Matrix transposition on CPU
+8. Matrix transposition on GPU
+>
 ```
 
 ## Authors
