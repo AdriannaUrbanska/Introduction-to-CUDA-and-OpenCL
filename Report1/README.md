@@ -9,7 +9,7 @@
   Collected data are presended in **Results** section.
   
 ## Code
-  At the beggining, we declare size of vector, block and grid. These variables are point of this project.
+  At the beginning, we declare size of vector, block and grid. These variables are point of this project.
   ```
   int nElem = 100;
   dim3 block (3);
