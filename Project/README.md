@@ -11,7 +11,7 @@ We created four operation, which can be performed both on CPU and GPU
 
 We created CudaObject class, which contains properties of a single matrix:
 
-'''
+```
 class CudaObject {
 
 public:
@@ -44,7 +44,7 @@ public:
   
   __host__  
 	void writeOut();                              //method which prints the matrix
-'''
+```
 
 ## Authors
 
