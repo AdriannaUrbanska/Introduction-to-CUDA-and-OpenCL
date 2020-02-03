@@ -32,9 +32,6 @@ public:
 	int getElement(int row, int col){
 		return data[row * stride + col];
 	}
-	
-	__host__ __device__
-	void operator =(const CudaObject &a){size_x = a.size_x; size_y = a.size_y; data = a.data; stride = a.stride;}
 
 	__device__
 	 void setElement(int row, int col, int val){
@@ -59,14 +56,6 @@ public:
 			std::cout<<"|"<<std::endl;
 		 }
 		std::cout<<"\n";
-	}
-
-	void setData(int *data, int x, int y){
-		this->size_x = x;
-		this->size_y = y;
-		this->bytes = x * y * sizeof(int);
-		cudaMallocManaged(&this->data, this->bytes);
-		memcpy(this->data, data, this->bytes);
 	}
 
 	void setSize(int x, int y){
@@ -160,24 +149,8 @@ __global__ void sub(int *fData, int *sData, int *oData, int x, int y){
 	  }
 }
 
-__global__ void tran(CudaObject iData, CudaObject oData){
 
-	int index = threadIdx.x + blockIdx.x * blockDim.x;
-	int stride = blockDim.x * gridDim.x;
-	int x = iData.size_x;
-	int y = iData.size_y;
-
-	for(int n = index; n < x * y; n += stride){
-		int i = n/x;
-		int j = n%x;
-		oData.data[n] = iData.data[y * j + i];
-	}
-}
-
-	
-
-__global__
-void mul(CudaObject a,CudaObject b, CudaObject c) {
+__global__ void mul(CudaObject a,CudaObject b, CudaObject c) {
 	int cutRow = blockIdx.y ;
 	int cutCol = blockIdx.x;
 
@@ -223,6 +196,20 @@ void mul(CudaObject a,CudaObject b, CudaObject c) {
 		c.setElement(fRow, fCol, temp);
 }
 
+__global__ void tran(CudaObject iData, CudaObject oData){
+
+	int index = threadIdx.x + blockIdx.x * blockDim.x;
+	int stride = blockDim.x * gridDim.x;
+	int x = iData.size_x;
+	int y = iData.size_y;
+
+	for(int n = index; n < x * y; n += stride){
+		int i = n/x;
+		int j = n%x;
+		oData.data[n] = iData.data[y * j + i];
+	}
+}
+
 void OperationsInfo()
 {
 	std::cout<<"Choose an operation:"<<std::endl;
@@ -260,7 +247,7 @@ int main(){
 	std::cin>>M_1;
 	std::cin>>val_1;
 
-	std::cout<<"Enter the values of size_x, size_y of the second matrix and value to filled matrix::"<<std::endl;
+	std::cout<<"Enter the values of size_x, size_y of the second matrix and value to filled matrix:"<<std::endl;
 	std::cin>>N_2;
 	std::cin>>M_2;
 	std::cin>>val_2;
